@@ -15,7 +15,7 @@ deck_test_() ->
 
 return_new_deck(Deck) ->
     fun() ->
-        ?assertEqual(Deck, deck_util:return_deck(Deck))
+        ?assertEqual(Deck, deck_util:new_deck())
     end.
 
 return_full_deck_size(Deck) ->

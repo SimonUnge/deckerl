@@ -2,7 +2,7 @@
 
 -include("include/deck.hrl").
 
--export([return_deck/1,
+-export([new_deck/0,
          deck_size/1,
          draw_top_card/1,
          draw_N_cards/2,
@@ -10,8 +10,8 @@
          sort_deck/1
         ]).
 
-return_deck(Deck) ->
-    Deck.
+new_deck() ->
+    ?DECK.
 
 deck_size(Deck) ->
     length(Deck).
@@ -22,8 +22,13 @@ draw_top_card([Firstcard | RestDeck]) ->
 draw_N_cards(N, Deck) ->
     lists:split(N, Deck).
 
-sort_deck(_Deck) ->
-    ?DECK.
+sort_deck(Deck) ->
+    Hearts = [ Card || Card <- Deck, element(1, Card) =:= hearts ],
+    Spades = [ Card || Card <- Deck, element(1, Card) =:= spades ],
+    Diamonds = [ Card || Card <- Deck, element(1, Card) =:= diamonds ],
+    Clubs = [ Card || Card <- Deck, element(1, Card) =:= clubs ],
+    lists:sort(Hearts) ++ lists:sort(Spades) ++ lists:sort(Diamonds)
+    ++ lists:sort(Clubs).
 
 shuffle_deck(List) ->
     randomize(round(math:log(length(List)) + 0.5), List).

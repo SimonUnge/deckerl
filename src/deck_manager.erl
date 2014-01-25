@@ -22,9 +22,6 @@
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
          terminate/2, code_change/3]).
 
--include("include/deck.hrl").
-
-
 -define(SERVER, ?MODULE).
 
 -record(state, {deck}).
@@ -53,10 +50,10 @@ draw_top_card() ->
 %%%===================================================================
 
 init([]) ->
-    {ok, #state{ deck = ?DECK}}.
+    {ok, #state{ deck = deck_util:new_deck()}}.
 
 handle_call({show_deck}, _From, State) ->
-    Reply = deck_util:return_deck(State#state.deck),
+    Reply = State#state.deck,
     {reply, Reply, State};
 handle_call({deck_size}, _From, State) ->
     Reply = deck_util:deck_size(State#state.deck),
