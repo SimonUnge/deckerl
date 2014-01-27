@@ -25,8 +25,7 @@ return_full_deck_size(Deck) ->
 
 draw_first_card(Deck) ->
     fun() ->
-        [_ | NewDeck] = Deck,
-        ?assertMatch({{hearts,2},NewDeck}, deck_util:draw_top_card(Deck))
+        ?assertMatch({{hearts,2},_}, deck_util:draw_top_card(Deck))
     end.
 
 draw_N_cards(Deck) ->
