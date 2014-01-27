@@ -23,16 +23,7 @@ draw_N_cards(N, Deck) ->
     lists:split(N, Deck).
 
 sort_deck(Deck) ->
-    %% Hearts = extract_suit(hearts, Deck),
-    %% Spades = extract_suit(spades, Deck),
-    %% Diamonds = extract_suit(diamonds, Deck),
-    %% Clubs = extract_suit(clubs, Deck),
-    %% lists:sort(Hearts) ++ lists:sort(Spades) ++ lists:sort(Diamonds)
-    %% ++ lists:sort(Clubs).
     lists:sort(fun is_card_lower/2, Deck).
-
-%% extract_suit(Suit, Deck) ->
-%%     [ Card || Card <- Deck, element(1, Card) =:= Suit ].
 
 is_card_lower({Suit, Value}, {Suit, Value2}) ->
     Value =< Value2;
