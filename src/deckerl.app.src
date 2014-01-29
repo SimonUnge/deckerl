@@ -1,6 +1,6 @@
 {application, deckerl,
  [
-  {description, ""},
+  {description, "A simple deck of cards to be used in other apps."},
   {vsn, "1"},
   {registered, []},
   {applications, [
