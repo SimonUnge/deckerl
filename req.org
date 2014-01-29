@@ -1,3 +1,1 @@
-* The deck util should create the deck. Remove return_deck.
-* Real sort!!! what is not full deck.
-* Card in correct order! (reverse from now).
+
