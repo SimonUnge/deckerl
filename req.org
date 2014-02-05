@@ -1,1 +1,11 @@
-
+* Improvements
+** Pile?
+What should happen with discarded cards? Should the 'deck' keep track
+of them of should it be the responsibility of the user of the deck?
+** Return cards to the deck
+It must be possible to put cards back
+** Sub decks?
+Should you be able to divide the deck in N pieces from the same deck,
+and should deckerl keep track of this?
+Scenario: You divide the deck in two, and two players use each half
+by drawing, putting back cards.
