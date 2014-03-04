@@ -8,7 +8,8 @@
          get_full_sorted_deck/1,
          get_shuffled_deck/1,
          get_deck_size/1,
-         draw_one_card_have_51_in_deck/1
+         draw_one_card_have_51_in_deck/1,
+         draw_10_cards_have_42_in_deck/1
         ]).
 
 all() ->
@@ -23,7 +24,8 @@ groups() ->
        get_full_sorted_deck,
        get_shuffled_deck,
        get_deck_size,
-       draw_one_card_have_51_in_deck
+       draw_one_card_have_51_in_deck,
+       draw_10_cards_have_42_in_deck
       ]
      }
     ].
@@ -46,6 +48,11 @@ draw_one_card_have_51_in_deck(_Config) ->
     deck_manager:shuffle_deck(),
     deck_manager:draw_top_card(),
     51 = deck_manager:deck_size().
+
+draw_10_cards_have_42_in_deck(_Config) ->
+    deck_manager:reset_deck(),
+    deck_manager:draw_N_cards(10),
+    42 = deck_manager:deck_size().
 
 init_per_group(dm_deck_utils, Config) ->
     start_app_return_config(Config);

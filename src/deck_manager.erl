@@ -13,9 +13,11 @@
 %% API
 -export([start_link/0,
          show_deck/0,
+         reset_deck/0,
          shuffle_deck/0,
          deck_size/0,
-         draw_top_card/0
+         draw_top_card/0,
+         draw_N_cards/1
         ]).
 
 %% gen_server callbacks
@@ -36,6 +38,9 @@ start_link() ->
 show_deck() ->
     gen_server:call(?MODULE, {show_deck}).
 
+reset_deck() ->
+    gen_server:cast(?MODULE, {reset_deck}).
+
 shuffle_deck() ->
     gen_server:cast(?MODULE, {shuffle_deck}).
 
@@ -44,6 +49,9 @@ deck_size() ->
 
 draw_top_card() ->
     gen_server:call(?MODULE, {draw_top_card}).
+
+draw_N_cards(N) ->
+    gen_server:call(?MODULE, {draw_N_cards, N}).
 
 %%%===================================================================
 %%% gen_server callbacks
@@ -60,11 +68,16 @@ handle_call({deck_size}, _From, State) ->
     {reply, Reply, State};
 handle_call({draw_top_card}, _From, State) ->
     {TopCard, NewDeck} = deck_util:draw_top_card(State#state.deck),
-    {reply, TopCard, #state{ deck = NewDeck }}.
+    {reply, TopCard, #state{ deck = NewDeck }};
+handle_call({draw_N_cards, N}, _From, State) ->
+    {TopNCards, NewDeck} = deck_util:draw_N_cards(N, State#state.deck),
+    {reply, TopNCards, #state{ deck = NewDeck }}.
 
 handle_cast({shuffle_deck}, State) ->
     ShuffledDeck = deck_util:shuffle_deck(State#state.deck),
-    {noreply, #state{ deck = ShuffledDeck }}.
+    {noreply, #state{ deck = ShuffledDeck }};
+handle_cast({reset_deck}, State) ->
+    {noreply, #state{ deck = deck_util:new_deck()}}.
 
 handle_info(_Info, State) ->
     {noreply, State}.
