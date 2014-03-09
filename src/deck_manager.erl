@@ -17,7 +17,8 @@
          shuffle_deck/0,
          deck_size/0,
          draw_top_card/0,
-         draw_N_cards/1
+         draw_N_cards/1,
+         sort_deck/0
         ]).
 
 %% gen_server callbacks
@@ -53,6 +54,9 @@ draw_top_card() ->
 draw_N_cards(N) ->
     gen_server:call(?MODULE, {draw_N_cards, N}).
 
+sort_deck() ->
+    gen_server:cast(?MODULE, {sort_deck}).
+
 %%%===================================================================
 %%% gen_server callbacks
 %%%===================================================================
@@ -67,7 +71,13 @@ handle_call({deck_size}, _From, State) ->
     Reply = deck_util:deck_size(State#state.deck),
     {reply, Reply, State};
 handle_call({draw_top_card}, _From, State) ->
-    {TopCard, NewDeck} = deck_util:draw_top_card(State#state.deck),
+    case deck_util:deck_size(State#state.deck) of
+        N when N > 0 ->
+            {TopCard, NewDeck} = deck_util:draw_top_card(State#state.deck);
+        0 ->
+            TopCard = {error, "The deck is empty"},
+            NewDeck = State#state.deck
+    end,
     {reply, TopCard, #state{ deck = NewDeck }};
 handle_call({draw_N_cards, N}, _From, State) ->
     {TopNCards, NewDeck} = deck_util:draw_N_cards(N, State#state.deck),
@@ -77,7 +87,9 @@ handle_cast({shuffle_deck}, State) ->
     ShuffledDeck = deck_util:shuffle_deck(State#state.deck),
     {noreply, #state{ deck = ShuffledDeck }};
 handle_cast({reset_deck}, _State) ->
-    {noreply, #state{ deck = deck_util:new_deck()}}.
+    {noreply, #state{ deck = deck_util:new_deck()}};
+handle_cast({sort_deck}, State) ->
+    {noreply, #state{ deck = deck_util:sort_deck(State#state.deck)}}.
 
 handle_info(_Info, State) ->
     {noreply, State}.
