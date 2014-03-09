@@ -76,7 +76,7 @@ handle_call({draw_N_cards, N}, _From, State) ->
 handle_cast({shuffle_deck}, State) ->
     ShuffledDeck = deck_util:shuffle_deck(State#state.deck),
     {noreply, #state{ deck = ShuffledDeck }};
-handle_cast({reset_deck}, State) ->
+handle_cast({reset_deck}, _State) ->
     {noreply, #state{ deck = deck_util:new_deck()}}.
 
 handle_info(_Info, State) ->
