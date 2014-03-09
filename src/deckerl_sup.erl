@@ -1,4 +1,3 @@
-
 -module(deckerl_sup).
 
 -behaviour(supervisor).

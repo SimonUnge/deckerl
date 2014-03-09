@@ -9,7 +9,8 @@
          get_shuffled_deck/1,
          get_deck_size/1,
          draw_one_card_have_51_in_deck/1,
-         draw_10_cards_have_42_in_deck/1
+         draw_10_cards_have_42_in_deck/1,
+         sort_shuffled_deck/1
         ]).
 
 all() ->
@@ -25,7 +26,8 @@ groups() ->
        get_shuffled_deck,
        get_deck_size,
        draw_one_card_have_51_in_deck,
-       draw_10_cards_have_42_in_deck
+       draw_10_cards_have_42_in_deck,
+       sort_shuffled_deck,
       ]
      }
     ].
@@ -40,6 +42,14 @@ get_shuffled_deck(_Config) ->
     ShuffledDeck = deck_manager:show_deck(),
     ct:pal("Shuffled Deck ~p", [ShuffledDeck]),
     Deck =/= ShuffledDeck.
+
+sort_shuffled_deck(_Config) ->
+    Deck = ?DECK,
+    deck_manager:shuffle_deck(),
+    ShuffledDeck = deck_manager:show_deck(),
+    Deck =/= ShuffledDeck,
+    SortedDeck = deck_manager:sort_deck(),
+    Deck =:= SortedDeck
 
 get_deck_size(_Config) ->
     52 = deck_manager:deck_size().
