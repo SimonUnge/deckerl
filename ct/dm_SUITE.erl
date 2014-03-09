@@ -11,7 +11,8 @@
          draw_one_card_have_51_in_deck/1,
          draw_10_cards_have_42_in_deck/1,
          sort_shuffled_deck/1,
-         draw_one_card_from_empty_deck/1
+         draw_one_card_from_empty_deck/1,
+         draw_too_many_cards_from_deck/1
         ]).
 
 all() ->
@@ -29,7 +30,8 @@ groups() ->
        draw_one_card_have_51_in_deck,
        draw_10_cards_have_42_in_deck,
        sort_shuffled_deck,
-       draw_one_card_from_empty_deck
+       draw_one_card_from_empty_deck,
+       draw_too_many_cards_from_deck
       ]
      }
     ].
@@ -71,7 +73,14 @@ draw_one_card_from_empty_deck(_Config) ->
     deck_manager:reset_deck(),
     52 = deck_manager:deck_size(),
     deck_manager:draw_N_cards(52),
-    {error, "The deck is empty"} = deck_manager:draw_top_card().
+    {error, "The deck is empty"} = deck_manager:draw_top_card(),
+    0 = deck_manager:deck_size().
+
+draw_too_many_cards_from_deck(_Config) ->
+    deck_manager:reset_deck(),
+    52 = deck_manager:deck_size(),
+    {error, "Not that many cards left in the deck"} = deck_manager:draw_N_cards(54),
+    52 = deck_manager:deck_size().
 
 init_per_group(dm_deck_utils, Config) ->
     start_app_return_config(Config);

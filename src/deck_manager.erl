@@ -80,7 +80,13 @@ handle_call({draw_top_card}, _From, State) ->
     end,
     {reply, TopCard, #state{ deck = NewDeck }};
 handle_call({draw_N_cards, N}, _From, State) ->
-    {TopNCards, NewDeck} = deck_util:draw_N_cards(N, State#state.deck),
+    case deck_util:deck_size(State#state.deck) of
+        Size when Size >= N ->
+            {TopNCards, NewDeck} = deck_util:draw_N_cards(N,State#state.deck);
+        Size when Size < N ->
+            TopNCards = {error, "Not that many cards left in the deck"},
+            NewDeck = State#state.deck
+    end,
     {reply, TopNCards, #state{ deck = NewDeck }}.
 
 handle_cast({shuffle_deck}, State) ->
